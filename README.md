@@ -91,6 +91,22 @@ Text settings are typed as translatable in the config schema, but the module
 doesn't yet ship a `*.config_translation.yml` file, so there is no translation
 tab for them in the admin UI.
 
+### Tokens
+Adds tokens for the mobile number, for use anywhere Drupal tokens are
+replaced: account emails (**Configuration → People → Account settings**),
+Webform and ECA messages, Pathauto patterns and so on.
+
+| Token | Example output |
+|---|---|
+| `[user:mobile]` | The number as saved, in whichever format the settings use |
+| `[user:mobile-local]` | `0412 456 789` |
+| `[user:mobile-international]` | `+61412456789` (best for SMS services) |
+
+The local and international tokens always output their own format, whatever
+the saved format is. When a user has no number, the tokens are left
+unreplaced, so the usual "clear" option removes them. A saved value that
+isn't a valid Australian mobile is output as-is.
+
 ### Permissions
 - **Administer user mobile field settings**
   (`administer user mobile`) controls access to the settings page. It is
