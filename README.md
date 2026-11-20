@@ -104,11 +104,10 @@ data. Back up the database first if you might need the numbers again.
 ## Installation
 
 ### With Composer (recommended)
-The repository is private, so the machine running Composer needs SSH access
-to it (in DDEV, run `ddev auth ssh` first).
+The module isn't on drupal.org, so first tell Composer where to find it:
 
 ```bash
-composer config repositories.user_registration_mobile vcs git@github.com:waynelevin/user_registration_mobile.git
+composer config repositories.user_registration_mobile vcs https://github.com/waynelevin/user_registration_mobile
 composer require drupal/user_registration_mobile:dev-main
 drush en user_registration_mobile -y
 ```
