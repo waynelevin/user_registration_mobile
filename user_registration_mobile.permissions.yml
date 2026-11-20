@@ -1,0 +1,4 @@
+administer user mobile:
+  title: 'Administer user mobile field settings'
+  description: 'Change the settings of the Mobile field on user accounts.'
+  restrict access: true

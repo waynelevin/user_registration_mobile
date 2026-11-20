@@ -1,0 +1,15 @@
+langcode: en
+enabled: true
+required: true
+label: 'Mobile'
+placeholder: 'eg 0412 456 789'
+help_text: 'Australian mobile number.'
+error_message: 'Please enter a valid Australian mobile number (eg 0412 456 789)'
+weight: 10
+unique: true
+unique_help_suffix: ' Mobile number must be unique to user.'
+unique_message: 'This mobile number is already used by another account.'
+format: international
+form_register: true
+form_admin_create: true
+form_edit: true

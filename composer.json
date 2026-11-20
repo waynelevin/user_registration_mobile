@@ -1,0 +1,9 @@
+{
+    "name": "drupal/user_registration_mobile",
+    "description": "Adds a Mobile field to user accounts, validated as an Australian mobile number.",
+    "type": "drupal-custom-module",
+    "license": "GPL-2.0-or-later",
+    "require": {
+        "drupal/core": "^11.1 || ^12"
+    }
+}

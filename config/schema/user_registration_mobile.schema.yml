@@ -1,0 +1,50 @@
+user_registration_mobile.settings:
+  type: config_object
+  label: 'User Registration Mobile settings'
+  mapping:
+    enabled:
+      type: boolean
+      label: 'Show the Mobile field'
+    required:
+      type: boolean
+      label: 'Mandatory'
+    label:
+      type: label
+      label: 'Field label'
+    placeholder:
+      type: label
+      label: 'Placeholder text'
+    help_text:
+      type: label
+      label: 'Help text'
+    error_message:
+      type: label
+      label: 'Error message'
+    weight:
+      type: integer
+      label: 'Weight'
+    unique:
+      type: boolean
+      label: 'Mobile unique to user'
+    unique_help_suffix:
+      type: label
+      label: 'Text added to the help text when numbers must be unique'
+    unique_message:
+      type: label
+      label: 'Duplicate number message'
+    format:
+      type: string
+      label: 'Saved format'
+      constraints:
+        Choice:
+          - local
+          - international
+    form_register:
+      type: boolean
+      label: 'Show on the registration form'
+    form_admin_create:
+      type: boolean
+      label: 'Show on the admin Add user form'
+    form_edit:
+      type: boolean
+      label: 'Show on the account edit form'

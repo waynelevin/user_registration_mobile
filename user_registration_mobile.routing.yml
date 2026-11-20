@@ -1,0 +1,7 @@
+user_registration_mobile.settings:
+  path: '/admin/config/people/user-mobile'
+  defaults:
+    _form: '\Drupal\user_registration_mobile\Form\SettingsForm'
+    _title: 'User mobile field'
+  requirements:
+    _permission: 'administer user mobile'

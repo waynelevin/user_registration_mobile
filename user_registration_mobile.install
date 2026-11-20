@@ -1,0 +1,160 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for User Registration Mobile.
+ */
+
+use Drupal\Core\Cache\Cache;
+
+/**
+ * Implements hook_install().
+ */
+function user_registration_mobile_install(bool $is_syncing): void {
+  $field_name = 'mobile';
+  $update_manager = \Drupal::entityDefinitionUpdateManager();
+
+  // Core normally installs the column on module install; this is a fallback.
+  if (!$update_manager->getFieldStorageDefinition($field_name, 'user')) {
+    \Drupal::service('entity_field.manager')->clearCachedFieldDefinitions();
+    $definitions = \Drupal::service('entity_field.manager')->getFieldStorageDefinitions('user');
+    if (isset($definitions[$field_name])) {
+      $update_manager->installFieldStorageDefinition($field_name, 'user', 'user_registration_mobile', $definitions[$field_name]);
+    }
+  }
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function user_registration_mobile_uninstall(bool $is_syncing): void {
+  // Core removes the mobile column and its data, and the module's settings,
+  // when this module is uninstalled. Clear cached user data so nothing still
+  // shows the old value.
+  \Drupal::entityTypeManager()->getStorage('user')->resetCache();
+  Cache::invalidateTags(['user_values', 'user_list']);
+}
+
+/**
+ * Adds the settings for the Mobile field.
+ */
+function user_registration_mobile_update_11001(): void {
+  $config = \Drupal::configFactory()->getEditable('user_registration_mobile.settings');
+  if ($config->isNew()) {
+    $config->setData([
+      'langcode' => \Drupal::languageManager()->getDefaultLanguage()->getId(),
+      'enabled' => TRUE,
+      'required' => TRUE,
+      'label' => 'Mobile',
+      'placeholder' => 'eg 0412 456 789',
+      'error_message' => 'Please enter a valid Australian mobile number (eg 0412 456 789)',
+      'weight' => 10,
+    ])->save();
+  }
+  \Drupal::service('entity_field.manager')->clearCachedFieldDefinitions();
+}
+
+/**
+ * Adds the "mandatory" setting for the Mobile field.
+ */
+function user_registration_mobile_update_11002(): void {
+  $config = \Drupal::configFactory()->getEditable('user_registration_mobile.settings');
+  if ($config->get('required') === NULL) {
+    $config->set('required', TRUE)->save();
+  }
+  \Drupal::service('entity_field.manager')->clearCachedFieldDefinitions();
+}
+
+/**
+ * Adds help text, unique number, saved format and per-form settings.
+ */
+function user_registration_mobile_update_11003(): void {
+  $config = \Drupal::configFactory()->getEditable('user_registration_mobile.settings');
+  $defaults = [
+    'help_text' => 'Australian mobile number.',
+    'unique' => TRUE,
+    'unique_message' => 'This mobile number is already used by another account.',
+    'format' => 'international',
+    'form_register' => TRUE,
+    'form_admin_create' => TRUE,
+    'form_edit' => TRUE,
+  ];
+  foreach ($defaults as $key => $value) {
+    if ($config->get($key) === NULL) {
+      $config->set($key, $value);
+    }
+  }
+  $config->save();
+  \Drupal::service('entity_field.manager')->clearCachedFieldDefinitions();
+}
+
+/**
+ * Turns on unique numbers.
+ */
+function user_registration_mobile_update_11004(): void {
+  $config = \Drupal::configFactory()->getEditable('user_registration_mobile.settings');
+  $config->set('unique', TRUE)->save();
+  \Drupal::service('entity_field.manager')->clearCachedFieldDefinitions();
+}
+
+/**
+ * Moves the unique-number note from the placeholder to the help text.
+ */
+function user_registration_mobile_update_11005(): void {
+  $config = \Drupal::configFactory()->getEditable('user_registration_mobile.settings');
+  $config->clear('unique_placeholder_suffix');
+  if ($config->get('unique_help_suffix') === NULL) {
+    $config->set('unique_help_suffix', ' Mobile number must be unique to user.');
+  }
+  $config->save();
+  \Drupal::service('entity_field.manager')->clearCachedFieldDefinitions();
+}
+
+/**
+ * Updates the default unique-number help text wording.
+ */
+function user_registration_mobile_update_11006(): void {
+  $config = \Drupal::configFactory()->getEditable('user_registration_mobile.settings');
+  if ($config->get('unique_help_suffix') === ' Each mobile number can only be used by one account.') {
+    $config->set('unique_help_suffix', ' Mobile number must be unique to user.')->save();
+  }
+  \Drupal::service('entity_field.manager')->clearCachedFieldDefinitions();
+}
+
+/**
+ * Saves numbers in international format by default and fills empty texts.
+ */
+function user_registration_mobile_update_11007(): void {
+  $config = \Drupal::configFactory()->getEditable('user_registration_mobile.settings');
+  $config->set('format', 'international');
+  foreach ([
+    'form_register' => TRUE,
+    'form_admin_create' => TRUE,
+    'form_edit' => TRUE,
+  ] as $key => $value) {
+    if ($config->get($key) === NULL) {
+      $config->set($key, $value);
+    }
+  }
+  foreach ([
+    'help_text' => 'Australian mobile number.',
+    'unique_help_suffix' => ' Mobile number must be unique to user.',
+    'unique_message' => 'This mobile number is already used by another account.',
+  ] as $key => $value) {
+    if (trim((string) $config->get($key)) === '') {
+      $config->set($key, $value);
+    }
+  }
+  $config->save();
+  \Drupal::service('entity_field.manager')->clearCachedFieldDefinitions();
+}
+
+/**
+ * Adds the language code the settings need for their translatable text.
+ */
+function user_registration_mobile_update_11008(): void {
+  $config = \Drupal::configFactory()->getEditable('user_registration_mobile.settings');
+  if (!$config->get('langcode')) {
+    $config->set('langcode', \Drupal::languageManager()->getDefaultLanguage()->getId())->save();
+  }
+}

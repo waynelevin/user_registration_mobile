@@ -1,0 +1,7 @@
+name: 'User Registration Mobile'
+type: module
+description: 'Adds a Mobile field to user accounts (stored on the user entity), shown on the registration and account forms, validated as an Australian mobile number. Uninstalling removes the field and its data.'
+core_version_requirement: ^11.1 || ^12
+dependencies:
+  - drupal:user
+configure: user_registration_mobile.settings

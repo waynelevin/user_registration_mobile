@@ -1,0 +1,6 @@
+user_registration_mobile.settings:
+  title: 'User mobile field'
+  description: 'Switch the Mobile field on user accounts on or off, and set its label, placeholder, error message and position.'
+  route_name: user_registration_mobile.settings
+  parent: user.admin_index
+  weight: 12
